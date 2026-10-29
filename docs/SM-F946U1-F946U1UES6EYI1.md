@@ -24,7 +24,7 @@ UMH stages.
 
 ```text
 9bb3f33c330ca3091811cf9a9392470da70f6c940397627e54eb6f7a07b4790e  cve-2026-43499-app.so
-a3d48072bdc7149de1378f413aadb0cca437fbb3bece6a9abc671e72074bab5b  cve-2026-43499-root
+b4a474453c82dcfbbe6867c9fc2c59322fe09684f5a01e294d643847746befc0  cve-2026-43499-root
 93315b24ad529b5147b02d06f6df3e68f6cac439d46f0ad2f173131a929a5e66  android13-5.15_kernelsu-q5q-F946U1UES6EYI1.ko
 04f1f20c2f64f77e3b75d3e18a347167519831156994f43d185436eac9f3491f  ksud-q5q-F946U1UES6EYI1-kdp
 ```
@@ -33,7 +33,7 @@ Sizes:
 
 ```text
 104128  cve-2026-43499-app.so
- 27072  cve-2026-43499-root
+ 27752  cve-2026-43499-root
 358304  android13-5.15_kernelsu-q5q-F946U1UES6EYI1.ko
 4873672 ksud-q5q-F946U1UES6EYI1-kdp
 ```
@@ -105,6 +105,10 @@ must be followed by a reboot; re-running on the same boot is not supported.
 The app profile therefore requires Shizuku, waits for the boot allocator
 window, and treats each boot as one production attempt.
 
+The root helper verifies both the KernelSU UAPI identity and the crowned
+manager app ID before reporting success. This prevents a loaded-but-unbound
+module from being treated as a usable root channel.
+
 ## Build
 
 ```sh
@@ -113,5 +117,5 @@ make TARGET=q5q-F946U1UES6EYI1 \
 ```
 
 The release exploit is truncated to the shared 104128-byte payload slot and
-the helper must remain 27072 bytes. The app must preserve
+the helper must remain 27752 bytes. The app must preserve
 `libcve43499root.so` byte-for-byte when packaging.
